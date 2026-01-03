@@ -1,0 +1,8 @@
+This Software Bill of Materials (SBOM) is released into the public domain under the
+Creative Commons CC0 1.0 Universal dedication.
+
+You may copy, modify, distribute, or use this SBOM for any purpose, including
+commercial, academic, enterprise, or security research, without asking permission.
+
+Author: Devashri Datta
+Full legal text: https://creativecommons.org/publicdomain/zero/1.0/
