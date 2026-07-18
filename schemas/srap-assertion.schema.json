@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1/schemas/srap-assertion.schema.json",
+  "title": "SRAP Assertion Schema",
+  "description": "Safety Relevance Assertion Profile — metadata schema for CycloneDX/SPDX SBOM components",
+  "type": "object",
+  "required": ["safety_relevance_class", "domain"],
+  "properties": {
+    "safety_relevance_class": {
+      "type": "string",
+      "enum": ["SR-0", "SR-1", "SR-2", "SR-3"],
+      "description": "SR-0: no safety function | SR-1: indirect | SR-2: supporting | SR-3: direct safety-critical"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["automotive", "medical", "industrial", "aviation", "energy", "robotics", "nuclear", "rail", "maritime"],
+      "description": "Primary safety domain for this component"
+    },
+    "asil_mapping": {
+      "type": "string",
+      "enum": ["QM", "A", "B", "C", "D"],
+      "description": "ISO 26262 ASIL level (or equivalent for other standards)"
+    },
+    "safety_analysis_ref": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference URI to FMEA, FTA, HAZOP, or equivalent safety analysis document"
+    },
+    "component_owner": {
+      "type": "string",
+      "description": "Team or individual responsible for safety disposition of this component"
+    },
+    "assertion_rationale": {
+      "type": "string",
+      "description": "Human-readable rationale for the safety relevance classification"
+    }
+  },
+  "additionalProperties": false
+}

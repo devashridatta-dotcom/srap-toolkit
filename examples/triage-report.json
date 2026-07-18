@@ -1,0 +1,69 @@
+{
+  "report_schema": "srap-triage-report/v1.0",
+  "generated_at": "2026-07-19T00:00:00Z",
+  "sbom_ref": "gpu-driver.cdx.json",
+  "product": "NVIDIA GPU Driver 550.90.07",
+  "domain": "automotive",
+  "sr_class_summary": {
+    "SR-0": 2,
+    "SR-1": 1,
+    "SR-2": 1,
+    "SR-3": 1,
+    "UNASSERTED": 0
+  },
+  "policy_result": "BLOCK_RELEASE",
+  "policy_findings": [
+    {
+      "component": "libcuda",
+      "cve": "CVE-2024-0132",
+      "cvss": 9.0,
+      "epss": 0.82,
+      "kev": true,
+      "sr_class": "SR-3",
+      "srs_score": 9.21,
+      "recommendation": "BLOCK_RELEASE",
+      "cra_articles": ["Art. 13(22)", "Art. 13(13)", "Annex VII point 8"],
+      "policy_message": "BLOCK: SR-3 component 'libcuda' has SRS score 9.2 with no VEX justification."
+    },
+    {
+      "component": "nvidia-fabricmanager",
+      "cve": null,
+      "cvss": null,
+      "epss": null,
+      "kev": false,
+      "sr_class": "SR-2",
+      "srs_score": 4.10,
+      "recommendation": "MONITOR",
+      "cra_articles": ["Art. 13(22)", "Annex VII point 8"],
+      "policy_message": null
+    },
+    {
+      "component": "openssl",
+      "cve": "CVE-2024-5535",
+      "cvss": 9.1,
+      "epss": 0.71,
+      "kev": false,
+      "sr_class": "SR-1",
+      "srs_score": 3.85,
+      "recommendation": "MONITOR",
+      "cra_articles": ["Annex VII point 8"],
+      "policy_message": null
+    },
+    {
+      "component": "zlib",
+      "cve": "CVE-2023-45853",
+      "cvss": 9.8,
+      "epss": 0.45,
+      "kev": false,
+      "sr_class": "SR-0",
+      "srs_score": 0.0,
+      "recommendation": "DEFER",
+      "cra_articles": ["Annex VII point 8"],
+      "policy_message": "SR-0: No safety function. CVSS 9.8 does not constitute release risk in this context."
+    }
+  ],
+  "cvss_only_comparison": {
+    "note": "Under CVSS-only triage, all 3 CVEs above would be ranked CRITICAL with equal priority.",
+    "srs_reranking_effect": "SRS correctly demotes zlib CVE-2023-45853 (CVSS 9.8, SR-0) below libcuda CVE-2024-0132 (CVSS 9.0, SR-3, KEV). This re-ranking is the core value of the SRS composite formula."
+  }
+}

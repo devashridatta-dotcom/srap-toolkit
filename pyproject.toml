@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "srap-toolkit"
+version = "0.1.0"
+description = "Safety Relevance Assertion Profile — open-source SBOM triage infrastructure for safety-critical software"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [{name = "Devashri Datta"}]
+keywords = ["sbom", "safety", "vulnerability", "triage", "cybersecurity", "cra", "cyclonedx", "spdx"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31.0",
+    "jsonschema>=4.21.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[project.scripts]
+srap = "srap_toolkit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1"
+Documentation = "https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1#readme"
+Research = "https://doi.org/10.5281/zenodo.19448602"
+"OpenSSF SBOM Everywhere" = "https://github.com/ossf/sbom-everywhere/issues/144"

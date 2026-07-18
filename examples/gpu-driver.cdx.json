@@ -1,0 +1,77 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:example-gpu-driver-sbom-001",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-19T00:00:00Z",
+    "component": {
+      "type": "firmware",
+      "name": "NVIDIA GPU Driver",
+      "version": "550.90.07",
+      "manufacturer": "NVIDIA Corporation"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "libcuda",
+      "version": "12.4.0",
+      "purl": "pkg:generic/nvidia/libcuda@12.4.0",
+      "description": "CUDA runtime library — kernel/userspace interface",
+      "properties": []
+    },
+    {
+      "type": "library",
+      "name": "openssl",
+      "version": "3.2.1",
+      "purl": "pkg:generic/openssl/openssl@3.2.1",
+      "description": "TLS/cryptographic library",
+      "properties": []
+    },
+    {
+      "type": "library",
+      "name": "zlib",
+      "version": "1.3.1",
+      "purl": "pkg:generic/zlib/zlib@1.3.1",
+      "description": "Compression library",
+      "properties": []
+    },
+    {
+      "type": "library",
+      "name": "nvidia-fabricmanager",
+      "version": "550.90.07",
+      "purl": "pkg:generic/nvidia/fabricmanager@550.90.07",
+      "description": "NVLink fabric management — safety-relevant in automotive inference",
+      "properties": []
+    },
+    {
+      "type": "library",
+      "name": "libdrm",
+      "version": "2.4.120",
+      "purl": "pkg:generic/libdrm/libdrm@2.4.120",
+      "description": "Direct Rendering Manager userspace library",
+      "properties": []
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "id": "CVE-2024-0132",
+      "source": {"name": "NVD"},
+      "ratings": [{"score": 9.0, "severity": "critical", "method": "CVSSv3"}],
+      "affects": [{"ref": "pkg:generic/nvidia/libcuda@12.4.0"}]
+    },
+    {
+      "id": "CVE-2024-5535",
+      "source": {"name": "NVD"},
+      "ratings": [{"score": 9.1, "severity": "critical", "method": "CVSSv3"}],
+      "affects": [{"ref": "pkg:generic/openssl/openssl@3.2.1"}]
+    },
+    {
+      "id": "CVE-2023-45853",
+      "source": {"name": "NVD"},
+      "ratings": [{"score": 9.8, "severity": "critical", "method": "CVSSv3"}],
+      "affects": [{"ref": "pkg:generic/zlib/zlib@1.3.1"}]
+    }
+  ]
+}
