@@ -1,6 +1,6 @@
 # SRAP OPA Policy: SR-3 Release Gate
 # Blocks release if any SR-3 component has SRS > 7.0 and no VEX justification.
-# Reference: SRAP Toolkit — https://doi.org/10.5281/zenodo.19448602
+# Reference: SRAP Toolkit - https://doi.org/10.5281/zenodo.19448602
 
 package srap
 

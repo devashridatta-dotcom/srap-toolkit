@@ -18,7 +18,7 @@
       "name": "libcuda",
       "version": "12.4.0",
       "purl": "pkg:generic/nvidia/libcuda@12.4.0",
-      "description": "CUDA runtime library — kernel/userspace interface",
+      "description": "CUDA runtime library - kernel/userspace interface",
       "properties": []
     },
     {
@@ -42,7 +42,7 @@
       "name": "nvidia-fabricmanager",
       "version": "550.90.07",
       "purl": "pkg:generic/nvidia/fabricmanager@550.90.07",
-      "description": "NVLink fabric management — safety-relevant in automotive inference",
+      "description": "NVLink fabric management - safety-relevant in automotive inference",
       "properties": []
     },
     {

@@ -1,9 +1,9 @@
 # SRAP Specification v2.0
-## Safety Relevance Assertion Profile — Technical Specification
+## Safety Relevance Assertion Profile - Technical Specification
 
 **Author:** Devashri Datta  
 **Research DOI:** [10.5281/zenodo.19448602](https://doi.org/10.5281/zenodo.19448602)  
-**Status:** Active community review — OpenSSF SBOM Everywhere #144, CycloneDX #954
+**Status:** Active community review - OpenSSF SBOM Everywhere #144, CycloneDX #954
 
 ---
 
@@ -87,7 +87,7 @@ Domain weights reflect the consequence severity of software failure across nine 
 
 ### 4.3 Key Finding
 
-75.9% of CVEs classified as CRITICAL under CVSS are reclassified to MONITOR or DEFER under SRS when SR-0 or SR-1 context is applied. This represents a ~4× reduction in actionable alerts for non-safety-relevant component pools — directly addressing alert fatigue in safety-critical release pipelines.
+75.9% of CVEs classified as CRITICAL under CVSS are reclassified to MONITOR or DEFER under SRS when SR-0 or SR-1 context is applied. This represents a ~4× reduction in actionable alerts for non-safety-relevant component pools - directly addressing alert fatigue in safety-critical release pipelines.
 
 ## 5. CycloneDX Integration
 
@@ -126,5 +126,5 @@ Active review: [CycloneDX Specification Issue #954](https://github.com/CycloneDX
 2. CycloneDX Specification Issue #954: Safety Relevance Extension. https://github.com/CycloneDX/specification/issues/954
 3. OpenSSF SBOM Everywhere Issue #144. https://github.com/ossf/sbom-everywhere/issues/144
 4. EU Cyber Resilience Act (EU) 2024/2847. Official Journal of the European Union.
-5. ISO 26262:2018 — Road vehicles — Functional safety.
-6. IEC 62304:2006+AMD1:2015 — Medical device software lifecycle processes.
+5. ISO 26262:2018 - Road vehicles - Functional safety.
+6. IEC 62304:2006+AMD1:2015 - Medical device software lifecycle processes.

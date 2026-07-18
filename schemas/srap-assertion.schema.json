@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1/schemas/srap-assertion.schema.json",
   "title": "SRAP Assertion Schema",
-  "description": "Safety Relevance Assertion Profile — metadata schema for CycloneDX/SPDX SBOM components",
+  "description": "Safety Relevance Assertion Profile - metadata schema for CycloneDX/SPDX SBOM components",
   "type": "object",
   "required": ["safety_relevance_class", "domain"],
   "properties": {

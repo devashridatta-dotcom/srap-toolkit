@@ -54,7 +54,7 @@ def cmd_cra_export(args):
 def main():
     parser = argparse.ArgumentParser(
         prog="srap",
-        description="SRAP Toolkit — Safety Relevance Assertion Profile for SBOM triage"
+        description="SRAP Toolkit - Safety Relevance Assertion Profile for SBOM triage"
     )
     sub = parser.add_subparsers(dest="command")
 

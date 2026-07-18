@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "srap-toolkit"
 version = "0.1.0"
-description = "Safety Relevance Assertion Profile — open-source SBOM triage infrastructure for safety-critical software"
+description = "Safety Relevance Assertion Profile - open-source SBOM triage infrastructure for safety-critical software"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 authors = [{name = "Devashri Datta"}]

@@ -1,5 +1,5 @@
 """
-SRAP Toolkit — Safety Relevance Assertion Profile
+SRAP Toolkit - Safety Relevance Assertion Profile
 Open-source SBOM triage infrastructure for safety-critical software systems.
 """
 __version__ = "0.1.0"

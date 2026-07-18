@@ -1,4 +1,4 @@
-# SRAP Toolkit — Safety Relevance Assertion Profile
+# SRAP Toolkit - Safety Relevance Assertion Profile
 
 > **Open-source SBOM triage infrastructure for safety-critical software systems**  
 > Validated against 250 real-world CVEs · CycloneDX & SPDX 3.1 compatible · EU CRA ready
@@ -13,19 +13,19 @@
 
 ## What is SRAP?
 
-Modern vulnerability triage in safety-critical software — automotive ECUs, medical devices, industrial control systems, GPU drivers — collapses to a single number: CVSS severity. **This is wrong in two ways.**
+Modern vulnerability triage in safety-critical software - automotive ECUs, medical devices, industrial control systems, GPU drivers - collapses to a single number: CVSS severity. **This is wrong in two ways.**
 
 1. CVSS measures exploitability in generic enterprise contexts, not operational safety impact.
 2. A CVSS 9.8 in a non-safety-relevant component creates less real-world risk than a CVSS 5.1 in firmware that controls brake actuation or radiation dosing.
 
-**SRAP (Safety Relevance Assertion Profile)** is a format-neutral metadata schema and scoring engine that gives security and safety teams a shared vocabulary to reason about this distinction at scale — directly inside SBOMs.
+**SRAP (Safety Relevance Assertion Profile)** is a format-neutral metadata schema and scoring engine that gives security and safety teams a shared vocabulary to reason about this distinction at scale - directly inside SBOMs.
 
 ---
 
 ## Why This Matters Now
 
 - **EU Cyber Resilience Act** (effective August 2025): Mandates SBOMs for products with digital elements. Article 13(22) requires documented vulnerability handling; Annex VII point 8 specifies SBOM contents.
-- **IEC 61508 / ISO 26262 / IEC 62304**: Safety standards require traceability between software components and their safety function — CVSS alone provides none.
+- **IEC 61508 / ISO 26262 / IEC 62304**: Safety standards require traceability between software components and their safety function - CVSS alone provides none.
 - **CISA KEV + EPSS**: High-signal threat data exists but is never combined with safety context in existing SBOM tooling.
 
 SRAP Toolkit closes this gap.
@@ -257,7 +257,7 @@ Active discussion channels:
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE)
+Apache 2.0 - see [LICENSE](LICENSE)
 
 ---
 
