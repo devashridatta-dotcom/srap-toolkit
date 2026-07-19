@@ -2,7 +2,7 @@
 SRS Composite Scorer
 Computes the Safety Relevance Score (SRS) for a CVE given component safety context.
 
-Formula (validated against 250-CVE corpus, Zenodo DOI: 10.5281/zenodo.19448602):
+Formula (validated against 250-CVE corpus, Zenodo DOI: 10.5281/zenodo.21433684):
 
     SRS = 0.30×CVSS_norm + 0.25×EPSS + 0.20×KEV + 0.15×Domain_Wt + 0.10×SC
 
@@ -21,7 +21,7 @@ Statistical validation:
     Spearman ρ=0.901 vs KEV+EPSS gold standard (95% CI [0.867, 0.925])
 
 Reference: ACM SCORED '26 (under review)
-Dataset:   https://doi.org/10.5281/zenodo.19448602
+Dataset:   https://doi.org/10.5281/zenodo.21433684
 """
 
 from dataclasses import dataclass
