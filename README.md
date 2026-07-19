@@ -124,49 +124,108 @@ pip install -e .
 
 ---
 
-## Quick Start
+## Quick Start — Score a CVE
 
-### Score a single CVE
+```python
+from srap_toolkit.scorer import SRSScorer
+
+scorer = SRSScorer()
+
+# CVE-2021-44228 (Log4Shell) in a Medical EHR system
+result = scorer.score(
+    cve="CVE-2021-44228",
+    cvss=10.0,
+    epss=0.976,
+    kev=True,
+    domain="medical",
+    sr_class="SR-3",          # integrator-declared safety relevance tier
+)
+
+print(result.srs_score)            # 0.929
+print(result.srs_score_display)    # 9.29  (×10 CLI scale)
+print(result.srs_class)            # CRITICAL
+print(result.triage_recommendation)# BLOCK_RELEASE
+print(result.signal_contributions)
+# {'cvss': 0.3, 'epss': 0.244, 'kev': 0.2, 'domain': 0.135, 'sc': 0.05}
+```
+
+### CLI
 
 ```bash
-srap score --cve CVE-2024-3094 --domain automotive --sr-class SR-2
+srap score --cve CVE-2021-44228 --cvss 10.0 --epss 0.976 --kev --domain medical --sr-class SR-3
 ```
 
 Output:
 ```json
 {
-  "cve": "CVE-2024-3094",
+  "cve": "CVE-2021-44228",
   "cvss": 10.0,
-  "epss": 0.97,
+  "epss": 0.976,
   "kev": true,
-  "domain": "automotive",
-  "domain_weight": 0.16,
-  "sr_class": "SR-2",
-  "srs_score": 8.94,
+  "domain": "medical",
+  "domain_weight": 0.9,
+  "sc": 0.5,
+  "sr_class": "SR-3",
+  "srs_score": 0.929,
+  "srs_score_display": 9.29,
+  "srs_class": "CRITICAL",
   "triage_recommendation": "BLOCK_RELEASE",
+  "signal_contributions": {
+    "cvss": 0.3,
+    "epss": 0.244,
+    "kev": 0.2,
+    "domain": 0.135,
+    "sc": 0.05
+  },
   "cra_article": "Art. 13(22)"
 }
 ```
 
-### Annotate an SBOM
+### Formula
 
-```bash
-srap annotate --sbom examples/gpu-driver.cdx.json --domain automotive --output annotated.cdx.json
+```
+SRS = 0.30 × CVSS_norm + 0.25 × EPSS + 0.20 × KEV + 0.15 × Domain_Wt + 0.10 × SC
 ```
 
-### Run full triage report
+| Signal | Weight | Source |
+|---|---|---|
+| CVSS Base Score (÷10) | 0.30 | NVD / CVE feed |
+| EPSS Score | 0.25 | FIRST.org EPSS API |
+| KEV Flag | 0.20 | CISA Known Exploited Vulnerabilities |
+| Domain Weight | 0.15 | AHP-calibrated (CR=0.0003), see table below |
+| SC (ecosystem mapped) | 0.10 | 0.5 if in public package ecosystem, 0.0 if proprietary/embedded |
 
-```bash
-srap report --sbom examples/gpu-driver.cdx.json --policy policies/sr3-gate.rego --output triage-report.json
-```
+### Domain Safety Weights
 
-### Generate EU CRA compliance package
+| Domain | Standard(s) | Weight |
+|---|---|---|
+| Aviation | DO-178C, DO-326A | 1.00 |
+| Medical | IEC 62304, IEC 62443-4-2 | 0.90 |
+| ICS/SCADA | IEC 62443 | 0.85 |
+| Automotive | ISO 26262, ISO/SAE 21434 | 0.85 |
+| Energy | IEC 61850, NERC CIP | 0.80 |
+| Supply Chain | EO 14028, NIST 800-161r1 | 0.70 |
+| Cloud/Container | CIS Benchmarks | 0.55 |
+| Network Infrastructure | NIST CSF | 0.50 |
+| General Software | — | 0.30 |
 
-```bash
-srap cra-export --sbom annotated.cdx.json --output cra-evidence-package.json
-```
+### SR Class (informational)
 
----
+The `sr_class` parameter (SR-0 through SR-3) records the integrator-declared
+safety relevance tier of the component. It is carried in the SRAP assertion
+record and used for CRA article mapping, but **does not modify the SRS score**.
+The score is determined entirely by the five deployment-context signals above.
+
+### SRS Classification Thresholds
+
+| SRS (0–1) | SRS (0–10) | Class | Triage |
+|---|---|---|---|
+| ≥ 0.75 | ≥ 7.5 | CRITICAL | BLOCK_RELEASE |
+| ≥ 0.55 | ≥ 5.5 | HIGH | ESCALATE |
+| ≥ 0.35 | ≥ 3.5 | MEDIUM | MONITOR |
+| ≥ 0.15 | ≥ 1.5 | LOW | DEFER |
+| < 0.15 | < 1.5 | INFORMATIONAL | DEFER |
+
 
 ## Empirical Validation
 
