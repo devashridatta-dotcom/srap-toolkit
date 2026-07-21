@@ -52,6 +52,12 @@ def cmd_cra_export(args):
     print(f"High-obligation components: {package['summary']['high_obligation_components']}")
 
 
+def cmd_dashboard(args):
+    from .dashboard import run_dashboard
+
+    run_dashboard(host=args.host, port=args.port)
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="srap",
@@ -85,6 +91,12 @@ def main():
     p_cra.add_argument("--manufacturer")
     p_cra.add_argument("--version")
     p_cra.set_defaults(func=cmd_cra_export)
+
+    # dashboard
+    p_dash = sub.add_parser("dashboard", help="Run the browser dashboard")
+    p_dash.add_argument("--host", default="127.0.0.1")
+    p_dash.add_argument("--port", type=int, default=8765)
+    p_dash.set_defaults(func=cmd_dashboard)
 
     args = parser.parse_args()
     if not args.command:

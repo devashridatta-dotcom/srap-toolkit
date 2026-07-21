@@ -30,6 +30,7 @@ dev = ["pytest>=7.0", "pytest-cov"]
 
 [project.scripts]
 srap = "srap_toolkit.cli:main"
+srap-dashboard = "srap_toolkit.dashboard:main"
 
 [project.urls]
 Homepage = "https://github.com/devashridatta-dotcom/srap-toolkit"
