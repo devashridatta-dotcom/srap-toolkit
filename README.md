@@ -182,6 +182,18 @@ Output:
 }
 ```
 
+### Dashboard
+
+```bash
+srap dashboard
+```
+
+Then open `http://127.0.0.1:8765` to upload a CycloneDX JSON SBOM, choose a safety domain and default SR class, run SRAP analysis, review the triage table, and download:
+
+- annotated SBOM JSON
+- CRA evidence package
+- SRAP triage report JSON
+
 ### Formula
 
 ```
@@ -273,7 +285,8 @@ srap-toolkit/
 │   ├── scorer.py           # SRS composite scoring engine
 │   ├── asserter.py         # SRAP assertion layer
 │   ├── cra_annotator.py    # EU CRA annotation module
-│   └── opa_bridge.py       # OPA/Rego policy integration
+│   ├── opa_bridge.py       # OPA/Rego policy integration
+│   └── dashboard.py        # Browser dashboard server
 ├── schemas/
 │   ├── srap-assertion.schema.json
 │   └── cra-evidence.schema.json
@@ -286,7 +299,8 @@ srap-toolkit/
 ├── tests/
 │   ├── test_scorer.py
 │   ├── test_asserter.py
-│   └── test_cra_annotator.py
+│   ├── test_cra_annotator.py
+│   └── test_dashboard.py
 ├── docs/
 │   └── SRAP-specification-v2.0.md
 ├── pyproject.toml
