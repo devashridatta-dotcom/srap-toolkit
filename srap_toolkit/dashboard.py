@@ -260,61 +260,127 @@ INDEX_HTML = r"""<!doctype html>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f6f7f9;
+      --bg: #eef1f5;
       --panel: #ffffff;
-      --ink: #17202a;
-      --muted: #667085;
-      --line: #d8dee8;
-      --blue: #2563eb;
+      --ink: #121827;
+      --muted: #6c7280;
+      --line: #d7dce5;
+      --navy: #17182b;
+      --navy-2: #20223a;
+      --blue: #1f8ad6;
       --green: #168a5b;
       --amber: #a56209;
-      --red: #bd2e2e;
-      --violet: #6d43a6;
+      --red: #ed2027;
+      --soft-red: #fff1f1;
+      --violet: #6554a6;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--ink);
-      font: 14px/1.45 "Segoe UI", Arial, sans-serif;
+      font: 13px/1.4 "Segoe UI", Arial, sans-serif;
     }
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 56px;
-      padding: 0 24px;
-      border-bottom: 1px solid var(--line);
-      background: #fff;
+      min-height: 42px;
+      padding: 0 18px;
+      background: var(--navy);
+      color: #fff;
+      border-bottom: 4px solid var(--red);
     }
-    h1 { font-size: 18px; margin: 0; font-weight: 650; }
-    main { padding: 18px 24px 28px; }
-    .toolbar {
-      display: grid;
-      grid-template-columns: minmax(220px, 1.2fr) repeat(5, minmax(130px, 0.8fr)) auto;
+    .brand {
+      display: flex;
+      align-items: baseline;
       gap: 10px;
-      align-items: end;
-      padding: 14px;
+      min-width: 0;
+    }
+    h1 {
+      font-size: 14px;
+      margin: 0;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+    .brand span {
+      color: #c7cede;
+      font-size: 11px;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 18px 30px;
+    }
+    .prototype-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.45fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+    .panel {
       border: 1px solid var(--line);
       background: var(--panel);
-      border-radius: 8px;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(18, 24, 39, 0.05);
     }
-    label { display: grid; gap: 5px; color: var(--muted); font-size: 12px; }
+    .panel-head {
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 10px;
+      background: var(--navy);
+      color: #fff;
+      border-bottom: 1px solid #0d0e19;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .panel-head span {
+      color: #c8ceda;
+      font-size: 11px;
+    }
+    .panel-body {
+      padding: 10px;
+      display: grid;
+      gap: 10px;
+    }
+    .accent-line {
+      height: 5px;
+      background: var(--red);
+    }
+    label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
     input, select, button {
       width: 100%;
-      min-height: 36px;
+      min-height: 30px;
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: 4px;
       background: #fff;
       color: var(--ink);
-      padding: 7px 9px;
+      padding: 5px 7px;
       font: inherit;
+    }
+    input[type="file"] {
+      padding: 4px;
     }
     button {
       border-color: var(--blue);
       background: var(--blue);
       color: #fff;
-      font-weight: 650;
+      font-weight: 750;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -323,49 +389,88 @@ INDEX_HTML = r"""<!doctype html>
       color: var(--blue);
     }
     button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 8px;
+      align-items: end;
+    }
+    .slider-stack {
+      display: grid;
+      gap: 8px;
+    }
+    .upload-row {
+      display: grid;
+      grid-template-columns: 1fr 0.72fr;
+      gap: 8px;
+    }
+    .score-card {
+      min-height: 96px;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      padding: 10px;
+      background: var(--red);
+      color: #fff;
+      text-align: center;
+      border-radius: 3px;
+    }
+    .score-card strong {
+      font-size: 31px;
+      line-height: 1;
+      font-weight: 850;
+    }
+    .score-card span {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
     .metrics {
       display: grid;
-      grid-template-columns: repeat(6, minmax(120px, 1fr));
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
     }
     .metric {
-      min-height: 76px;
+      min-height: 50px;
       border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 8px;
-      padding: 12px;
+      background: #f8fafc;
+      border-radius: 4px;
+      padding: 7px;
     }
-    .metric span { color: var(--muted); font-size: 12px; }
-    .metric strong { display: block; margin-top: 5px; font-size: 24px; }
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: start;
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
-    .panel {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 8px;
-      overflow: hidden;
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 19px;
     }
-    .panel-head {
-      min-height: 44px;
+    .status {
+      color: #dce3f0;
+      font-size: 12px;
+    }
+    .download-strip {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
+      gap: 8px;
+      padding-top: 3px;
+      flex-wrap: wrap;
     }
-    h2 { margin: 0; font-size: 14px; }
-    .downloads { display: flex; gap: 8px; flex-wrap: wrap; }
-    .downloads button { width: auto; min-height: 32px; padding: 5px 9px; }
+    .download-strip button {
+      width: auto;
+      min-height: 28px;
+      padding: 4px 8px;
+    }
+    .viewer {
+      margin-top: 12px;
+    }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     th, td {
-      padding: 9px 10px;
+      padding: 8px 9px;
       border-bottom: 1px solid var(--line);
       text-align: left;
       vertical-align: middle;
@@ -373,7 +478,12 @@ INDEX_HTML = r"""<!doctype html>
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    th { color: var(--muted); font-size: 12px; font-weight: 650; background: #fbfcfe; }
+    th {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 750;
+      background: var(--navy);
+    }
     tr { cursor: pointer; }
     tr:hover td { background: #f8fbff; }
     .pill {
@@ -382,7 +492,7 @@ INDEX_HTML = r"""<!doctype html>
       justify-content: center;
       min-width: 78px;
       min-height: 24px;
-      border-radius: 999px;
+      border-radius: 4px;
       padding: 2px 8px;
       color: #fff;
       font-size: 12px;
@@ -393,18 +503,37 @@ INDEX_HTML = r"""<!doctype html>
     .MONITOR, .MEDIUM { background: var(--blue); }
     .DEFER, .LOW { background: var(--green); }
     .detail {
-      padding: 12px;
+      padding: 10px;
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
     .kv {
       display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 6px 10px;
+      grid-template-columns: 136px 1fr;
+      gap: 7px 9px;
       margin: 0;
     }
     .kv dt { color: var(--muted); }
-    .kv dd { margin: 0; overflow-wrap: anywhere; }
+    .kv dd {
+      margin: 0;
+      min-height: 28px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      padding: 5px 7px;
+      overflow-wrap: anywhere;
+    }
+    .json-preview {
+      max-height: 156px;
+      overflow: auto;
+      margin: 0;
+      padding: 9px;
+      background: #f3f4f6;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font: 12px/1.35 Consolas, "Courier New", monospace;
+      color: #33394a;
+    }
     .bars { display: grid; gap: 8px; }
     .bar-row {
       display: grid;
@@ -431,61 +560,84 @@ INDEX_HTML = r"""<!doctype html>
       color: var(--muted);
       text-align: center;
     }
-    .status { color: var(--muted); }
     @media (max-width: 1100px) {
-      .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .prototype-grid { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .workspace { grid-template-columns: 1fr; }
     }
     @media (max-width: 680px) {
       header { padding: 0 14px; }
       main { padding: 14px; }
-      .toolbar, .metrics { grid-template-columns: 1fr; }
+      .brand { display: grid; gap: 2px; }
+      .calculator-grid, .upload-row, .metrics { grid-template-columns: 1fr; }
       th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4) { display: none; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>SRAP Toolkit</h1>
+    <div class="brand">
+      <h1>SRS + SRAP Prototype v0.3</h1>
+      <span>Safety Relevance Scoring</span>
+    </div>
     <span class="status" id="status">Ready</span>
   </header>
   <main>
-    <section class="toolbar">
-      <label>SBOM JSON<input id="file" type="file" accept=".json,application/json"></label>
-      <label>Domain<select id="domain"></select></label>
-      <label>Default SR<select id="defaultSr"><option>SR-0</option><option>SR-1</option><option>SR-2</option><option>SR-3</option></select></label>
-      <label>Product<input id="product" value="Uploaded Product"></label>
-      <label>Manufacturer<input id="manufacturer" value="Unknown"></label>
-      <label>Version<input id="version"></label>
-      <button id="run">Run Analysis</button>
-    </section>
-
-    <section class="metrics">
-      <div class="metric"><span>Components</span><strong id="componentCount">0</strong></div>
-      <div class="metric"><span>Vulnerabilities</span><strong id="vulnCount">0</strong></div>
-      <div class="metric"><span>Block</span><strong id="blockCount">0</strong></div>
-      <div class="metric"><span>Escalate</span><strong id="escalateCount">0</strong></div>
-      <div class="metric"><span>Monitor</span><strong id="monitorCount">0</strong></div>
-      <div class="metric"><span>Max SRS</span><strong id="maxSrs">0.0</strong></div>
-    </section>
-
-    <section class="workspace">
-      <div class="panel">
+    <section class="prototype-grid">
+      <div class="panel calculator">
         <div class="panel-head">
-          <h2>Vulnerability Triage</h2>
-          <div class="downloads">
+          <h2>TAB 1 - SRS CALCULATOR</h2>
+          <span>Five-signal composite scoring</span>
+        </div>
+        <div class="panel-body">
+          <div class="upload-row">
+            <label>SBOM JSON<input id="file" type="file" accept=".json,application/json"></label>
+            <button id="run">Run Analysis</button>
+          </div>
+          <div class="calculator-grid">
+            <div class="slider-stack">
+              <label>Deployment Domain<select id="domain"></select></label>
+              <label>Default Safety Relevance<select id="defaultSr"><option>SR-0</option><option>SR-1</option><option>SR-2</option><option>SR-3</option></select></label>
+              <label>Product<input id="product" value="Uploaded Product"></label>
+              <label>Manufacturer<input id="manufacturer" value="Unknown"></label>
+              <label>Version<input id="version"></label>
+            </div>
+            <div class="score-card">
+              <strong id="maxSrs">0.000</strong>
+              <span id="scoreClass">No score</span>
+              <span id="scoreAction">Upload SBOM</span>
+            </div>
+          </div>
+          <section class="metrics">
+            <div class="metric"><span>Components</span><strong id="componentCount">0</strong></div>
+            <div class="metric"><span>Vulnerabilities</span><strong id="vulnCount">0</strong></div>
+            <div class="metric"><span>Block</span><strong id="blockCount">0</strong></div>
+            <div class="metric"><span>Escalate</span><strong id="escalateCount">0</strong></div>
+            <div class="metric"><span>Monitor</span><strong id="monitorCount">0</strong></div>
+            <div class="metric"><span>Downloads</span><strong id="downloadCount">0</strong></div>
+          </section>
+          <div class="download-strip">
             <button class="secondary" id="downloadAnnotated" disabled>Annotated SBOM</button>
             <button class="secondary" id="downloadCra" disabled>CRA Evidence</button>
             <button class="secondary" id="downloadTriage" disabled>Triage JSON</button>
           </div>
         </div>
-        <div id="tableWrap" class="empty">Upload an SBOM JSON to populate triage results.</div>
       </div>
       <aside class="panel">
-        <div class="panel-head"><h2>Selected Finding</h2></div>
+        <div class="accent-line"></div>
+        <div class="panel-head">
+          <h2>TAB 2 - SRAP RECORD GENERATOR</h2>
+          <span>Machine-readable assertion JSON</span>
+        </div>
         <div id="details" class="empty">Select a result row.</div>
       </aside>
+    </section>
+
+    <section class="panel viewer">
+      <div class="panel-head">
+        <h2>TAB 3 - CORPUS SAMPLE VIEWER</h2>
+        <span>SRAP triage results from uploaded SBOM</span>
+      </div>
+      <div id="tableWrap" class="empty">Upload an SBOM JSON to populate triage results.</div>
     </section>
   </main>
   <script>
@@ -543,10 +695,17 @@ INDEX_HTML = r"""<!doctype html>
       $('blockCount').textContent = summary.triage_counts.BLOCK_RELEASE || 0;
       $('escalateCount').textContent = summary.triage_counts.ESCALATE || 0;
       $('monitorCount').textContent = summary.triage_counts.MONITOR || 0;
-      $('maxSrs').textContent = Number(summary.max_srs || 0).toFixed(1);
+      $('downloadCount').textContent = '3';
       for (const id of ['downloadAnnotated', 'downloadCra', 'downloadTriage']) $(id).disabled = false;
+      renderScore(state.selected);
       renderTable(result.rows);
       renderDetails(state.selected);
+    }
+
+    function renderScore(row) {
+      $('maxSrs').textContent = row ? Number(row.srs_score).toFixed(3) : '0.000';
+      $('scoreClass').textContent = row ? row.srs_class : 'No score';
+      $('scoreAction').textContent = row ? row.triage_recommendation : 'Upload SBOM';
     }
 
     function renderTable(rows) {
@@ -577,6 +736,7 @@ INDEX_HTML = r"""<!doctype html>
       $('tableWrap').querySelectorAll('tr[data-index]').forEach((tr) => {
         tr.addEventListener('click', () => {
           state.selected = rows[Number(tr.dataset.index)];
+          renderScore(state.selected);
           renderDetails(state.selected);
         });
       });
@@ -589,17 +749,53 @@ INDEX_HTML = r"""<!doctype html>
         return;
       }
       $('details').className = 'detail';
+      const record = {
+        srapVersion: '2.0',
+        assertionId: `SRAP-${row.cve}`,
+        componentRef: row.purl || row.bom_ref || row.component_name,
+        systemContext: row.domain,
+        safetyRelevance: row.sr_class,
+        failureProfile: `Potential safety impact through ${row.component_name}`,
+        mitigationModifier: 0.0,
+        knownUnknown: 'verified',
+        assertionBasis: 'safety_analysis',
+        domainStandard: domainStandard(row.domain),
+        srsScore: row.srs_score,
+        srsClass: row.srs_class
+      };
       $('details').innerHTML = `<dl class="kv">
-        <dt>CVE</dt><dd>${escapeHtml(row.cve)}</dd>
-        <dt>Component</dt><dd>${escapeHtml(row.component_name)}</dd>
-        <dt>Version</dt><dd>${escapeHtml(row.component_version || '')}</dd>
-        <dt>Class</dt><dd><span class="pill ${row.srs_class}">${row.srs_class}</span></dd>
-        <dt>Action</dt><dd><span class="pill ${row.triage_recommendation}">${row.triage_recommendation}</span></dd>
-        <dt>CRA</dt><dd>${escapeHtml(row.cra_article || '')}</dd>
+        <dt>System Context</dt><dd>${escapeHtml(row.domain)}</dd>
+        <dt>Safety Relevance</dt><dd>${escapeHtml(row.sr_class)}</dd>
+        <dt>Failure Profile</dt><dd>${escapeHtml(record.failureProfile)}</dd>
+        <dt>Mitigation Modifier</dt><dd>0.0</dd>
+        <dt>Known Unknowns</dt><dd>verified</dd>
+        <dt>Assertion Basis</dt><dd>safety_analysis</dd>
+        <dt>Domain Standard</dt><dd>${escapeHtml(record.domainStandard)}</dd>
+        <dt>SRS Score</dt><dd>${Number(row.srs_score).toFixed(4)} (${Number(row.srs_score_display).toFixed(2)}/10)</dd>
       </dl>
       <div class="bars">${Object.entries(row.signal_contributions).map(([name, value]) =>
         `<div class="bar-row"><span>${name}</span><div class="bar"><i style="width:${Math.min(100, value * 400)}%"></i></div><span>${Number(value).toFixed(3)}</span></div>`
-      ).join('')}</div>`;
+      ).join('')}</div>
+      <pre class="json-preview">${escapeHtml(JSON.stringify(record, null, 2))}</pre>`;
+    }
+
+    function domainStandard(domain) {
+      return ({
+        automotive: 'ISO 26262 ASIL-D',
+        medical: 'IEC 62304 Class C',
+        aviation: 'DO-178C',
+        nuclear: 'IEC 61513 / IEC 62645',
+        ics_scada: 'IEC 62443 / IEC 61511',
+        industrial: 'IEC 62443 OT',
+        energy: 'IEC 61850 / NERC CIP',
+        rail: 'EN 50126 / EN 50128',
+        robotics: 'ISO 10218 / IEC 63327',
+        maritime: 'IACS UR E26/E27',
+        supply_chain: 'NIST 800-161r1',
+        cloud_infra: 'CIS Benchmarks',
+        network_infra: 'NIST CSF',
+        general: 'General software'
+      })[domain] || domain;
     }
 
     function downloadJson(name, value) {

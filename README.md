@@ -188,7 +188,7 @@ Output:
 srap dashboard
 ```
 
-Then open `http://127.0.0.1:8765` to upload a CycloneDX JSON SBOM, choose a safety domain and default SR class, run SRAP analysis, review the triage table, and download:
+Then open `http://127.0.0.1:8765` to use the prototype-style SRS calculator, SRAP record generator, and corpus viewer. You can upload a CycloneDX JSON SBOM, choose a safety domain and default SR class, run SRAP analysis, review the triage table, and download:
 
 - annotated SBOM JSON
 - CRA evidence package
