@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/devashridatta-dotcom/srap-toolkit/schemas/cra-evidence.schema.json",
+  "title": "CRA Evidence Package Schema",
+  "description": "EU CRA compliance evidence package generated from SRAP-annotated SBOM components",
+  "type": "object",
+  "required": ["schema", "generated_at", "product", "cra_compliance", "summary", "components"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cra-evidence-package/v1.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "product": {
+      "type": "object",
+      "required": ["name", "manufacturer"],
+      "properties": {
+        "name": {"type": "string"},
+        "manufacturer": {"type": "string"},
+        "version": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "cra_compliance": {
+      "type": "object",
+      "required": ["applicable_articles", "regulation", "assessment_date"],
+      "properties": {
+        "applicable_articles": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "regulation": {"type": "string"},
+        "assessment_date": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_components", "by_sr_class", "high_obligation_components"],
+      "properties": {
+        "total_components": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_sr_class": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "high_obligation_components": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "component_name",
+          "safety_relevance_class",
+          "cra_articles",
+          "cra_obligation",
+          "cra_severity"
+        ],
+        "properties": {
+          "component_name": {"type": ["string", "null"]},
+          "component_version": {"type": ["string", "null"]},
+          "purl": {"type": ["string", "null"]},
+          "safety_relevance_class": {"type": "string"},
+          "domain": {"type": ["string", "null"]},
+          "asil_mapping": {"type": ["string", "null"]},
+          "component_owner": {"type": ["string", "null"]},
+          "cra_articles": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "cra_obligation": {"type": "string"},
+          "cra_severity": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -12,6 +12,7 @@ from .cra_annotator import CRAAnnotator
 
 def cmd_score(args):
     scorer = SRSScorer()
+    sc_override = 0.5 if args.depth >= 2 else None
     result = scorer.score(
         cve=args.cve,
         cvss=args.cvss,
@@ -19,7 +20,7 @@ def cmd_score(args):
         kev=args.kev,
         domain=args.domain,
         sr_class=args.sr_class,
-        supply_chain_depth=args.depth,
+        sc_override=sc_override,
     )
     print(json.dumps(result.to_dict(), indent=2))
 

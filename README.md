@@ -53,7 +53,8 @@ A format-neutral metadata schema compatible with **CycloneDX 1.6+** and **SPDX 3
 A five-factor scoring engine replacing CVSS-only triage:
 
 ```
-SRS = 0.30 × CVSS_Base + 0.25 × EPSS_Score + 0.20 × KEV_Flag + 0.15 × Domain_Weight + 0.10 × Supply_Chain_Depth
+raw = 0.30 * CVSS_norm + 0.25 * EPSS + 0.20 * KEV + 0.15 * Domain_Weight + 0.10 * SC
+SRS = min(1.0, raw * SR_multiplier)
 ```
 
 **Factor definitions:**
@@ -64,21 +65,21 @@ SRS = 0.30 × CVSS_Base + 0.25 × EPSS_Score + 0.20 × KEV_Flag + 0.15 × Domain
 | EPSS Score | 0.25 | FIRST.org EPSS API |
 | KEV Flag | 0.20 | CISA Known Exploited Vulnerabilities |
 | Domain Weight | 0.15 | AHP-calibrated per safety domain (CR=0.0003) |
-| Supply Chain Depth | 0.10 | Component depth in SBOM dependency graph |
+| Supply Chain Exposure (SC) | 0.10 | Domain default or CLI override for public package ecosystem exposure |
 
 **Domain weight table (AHP-calibrated):**
 
 | Domain | Weight |
 |---|---|
-| Nuclear | 0.22 |
-| Aviation | 0.20 |
-| Medical | 0.18 |
-| Automotive | 0.16 |
-| Rail | 0.10 |
-| Industrial | 0.07 |
-| Energy | 0.04 |
-| Robotics | 0.02 |
-| Maritime | 0.01 |
+| Aviation | 1.00 |
+| Nuclear | 0.95 |
+| Medical | 0.90 |
+| Automotive | 0.85 |
+| Industrial | 0.85 |
+| Energy | 0.80 |
+| Rail | 0.65 |
+| Robotics | 0.55 |
+| Maritime | 0.40 |
 
 ### 3. OPA/Rego Policy Engine Integration
 
@@ -115,12 +116,12 @@ pip install srap-toolkit
 Or from source:
 
 ```bash
-git clone https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1.git
-cd enterprise-sbom-public-domain1
+git clone https://github.com/devashridatta-dotcom/srap-toolkit.git
+cd srap-toolkit
 pip install -e .
 ```
 
-**Requirements:** Python 3.9+, `requests`, `jsonschema`, `cyclonedx-python-lib`
+**Requirements:** Python 3.9+, `requests`, `jsonschema`
 
 ---
 
@@ -177,14 +178,15 @@ Output:
     "domain": 0.135,
     "sc": 0.05
   },
-  "cra_article": "Art. 13(22)"
+  "cra_article": "Art. 13(22), Art. 13(13)"
 }
 ```
 
 ### Formula
 
 ```
-SRS = 0.30 × CVSS_norm + 0.25 × EPSS + 0.20 × KEV + 0.15 × Domain_Wt + 0.10 × SC
+raw = 0.30 * CVSS_norm + 0.25 * EPSS + 0.20 * KEV + 0.15 * Domain_Wt + 0.10 * SC
+SRS = min(1.0, raw * SR_multiplier)
 ```
 
 | Signal | Weight | Source |
@@ -201,30 +203,33 @@ SRS = 0.30 × CVSS_norm + 0.25 × EPSS + 0.20 × KEV + 0.15 × Domain_Wt + 0.10 
 |---|---|---|
 | Aviation | DO-178C, DO-326A | 1.00 |
 | Medical | IEC 62304, IEC 62443-4-2 | 0.90 |
-| ICS/SCADA | IEC 62443 | 0.85 |
+| Nuclear | IEC 61513 | 0.95 |
 | Automotive | ISO 26262, ISO/SAE 21434 | 0.85 |
+| Industrial | IEC 62443, IEC 61511 | 0.85 |
 | Energy | IEC 61850, NERC CIP | 0.80 |
+| Rail | EN 50128, EN 50657 | 0.65 |
+| Robotics | ISO 10218 | 0.55 |
+| Maritime | IEC 61162 | 0.40 |
 | Supply Chain | EO 14028, NIST 800-161r1 | 0.70 |
 | Cloud/Container | CIS Benchmarks | 0.55 |
 | Network Infrastructure | NIST CSF | 0.50 |
 | General Software | — | 0.30 |
 
-### SR Class (informational)
+### SR Class Gate
 
 The `sr_class` parameter (SR-0 through SR-3) records the integrator-declared
 safety relevance tier of the component. It is carried in the SRAP assertion
-record and used for CRA article mapping, but **does not modify the SRS score**.
-The score is determined entirely by the five deployment-context signals above.
+record, used for CRA article mapping, and gates the final score:
+SR-0 = 0.0, SR-1 = 0.5, SR-2 = 0.75, SR-3 = 1.0.
 
 ### SRS Classification Thresholds
 
 | SRS (0–1) | SRS (0–10) | Class | Triage |
 |---|---|---|---|
-| ≥ 0.75 | ≥ 7.5 | CRITICAL | BLOCK_RELEASE |
-| ≥ 0.55 | ≥ 5.5 | HIGH | ESCALATE |
-| ≥ 0.35 | ≥ 3.5 | MEDIUM | MONITOR |
-| ≥ 0.15 | ≥ 1.5 | LOW | DEFER |
-| < 0.15 | < 1.5 | INFORMATIONAL | DEFER |
+| ≥ 0.70 | ≥ 7.0 | CRITICAL | BLOCK_RELEASE |
+| ≥ 0.50 | ≥ 5.0 | HIGH | ESCALATE |
+| ≥ 0.30 | ≥ 3.0 | MEDIUM | MONITOR |
+| < 0.30 | < 3.0 | LOW | DEFER |
 
 
 ## Empirical Validation
@@ -261,7 +266,7 @@ ACM SCORED '26 submission (under review).
 ## Repository Structure
 
 ```
-enterprise-sbom-public-domain1/
+srap-toolkit/
 ├── srap_toolkit/
 │   ├── __init__.py
 │   ├── cli.py              # CLI entry point
@@ -308,7 +313,7 @@ Active discussion channels:
   title = {SRAP Toolkit: Safety Relevance Assertion Profile for SBOM-Driven Vulnerability Triage},
   year = {2026},
   doi = {10.5281/zenodo.19448602},
-  url = {https://github.com/devashridatta-dotcom/enterprise-sbom-public-domain1}
+  url = {https://github.com/devashridatta-dotcom/srap-toolkit}
 }
 ```
 

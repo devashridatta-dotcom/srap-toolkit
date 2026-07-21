@@ -39,28 +39,43 @@ from typing import Optional
 DOMAIN_WEIGHTS = {
     "aviation":      1.00,   # DO-178C, DO-326A
     "medical":       0.90,   # IEC 62304, IEC 62443-4-2
+    "nuclear":       0.88,   # IEC 61513, IEC 62645
     "ics_scada":     0.85,   # IEC 62443, IEC 61511
     "automotive":    0.85,   # ISO 26262, ISO/SAE 21434
     "energy":        0.80,   # IEC 61850, NERC CIP
+    "industrial":    0.75,   # IEC 62443 OT/industrial
     "supply_chain":  0.70,   # EO 14028, NIST 800-161r1
+    "rail":          0.65,   # EN 50126 / EN 50128
     "cloud_infra":   0.55,   # CIS Benchmarks
     "network_infra": 0.50,   # NIST CSF
+    "robotics":      0.45,   # ISO 10218 / IEC 63327
     "general":       0.30,   # General software
+    "maritime":      0.25,   # IACS UR E26/E27
+}
+
+DOMAIN_ALIASES = {
+    "cloud": "cloud_infra",
+    "network": "network_infra",
 }
 
 # ── Supply-chain ecosystem exposure per domain ────────────────────────────
 # SC = 0.5 if domain components are typically in public package ecosystems
 #       (npm, PyPI, Maven); 0.0 if primarily proprietary or embedded firmware.
 DOMAIN_SC = {
-    "aviation":      0.0,   # embedded / proprietary
-    "medical":       0.5,   # OSS libs common in FDA context
-    "ics_scada":     0.5,   # IEC 62443 assets often use OSS libs
-    "automotive":    0.5,   # AUTOSAR stacks increasingly OSS-based
-    "energy":        0.5,   # OpenADR / IEC 61850 OSS implementations
-    "supply_chain":  0.5,   # directly in ecosystem by definition
-    "cloud_infra":   0.5,   # containers and cloud-native
-    "network_infra": 0.0,   # firmware / proprietary
-    "general":       0.0,   # no assumed ecosystem mapping
+    "aviation":      0.0,
+    "medical":       0.5,
+    "nuclear":       0.0,
+    "ics_scada":     0.5,
+    "automotive":    0.5,
+    "energy":        0.5,
+    "industrial":    0.5,
+    "supply_chain":  0.5,
+    "rail":          0.0,
+    "cloud_infra":   0.5,
+    "network_infra": 0.0,
+    "robotics":      0.5,
+    "general":       0.0,
+    "maritime":      0.0,
 }
 
 # ── Signal weights (AHP-derived, sum=1.00) ────────────────────────────────
@@ -204,6 +219,8 @@ class SRSScorer:
             SRSResult with score, classification, triage recommendation,
             raw pre-gate score, SR multiplier, and per-signal contributions.
         """
+        domain = DOMAIN_ALIASES.get(domain, domain)
+
         if domain not in DOMAIN_WEIGHTS:
             raise ValueError(
                 f"Unknown domain '{domain}'. Valid: {sorted(DOMAIN_WEIGHTS.keys())}"

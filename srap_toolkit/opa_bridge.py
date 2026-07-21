@@ -30,21 +30,66 @@ class OPABridge:
         Merge SBOM components with SRS scores into OPA input format.
         scored_components: list of SRSResult.to_dict() outputs
         """
-        score_map = {s["cve"]: s for s in scored_components}
+        score_by_cve = {s.get("cve"): s for s in scored_components if s.get("cve")}
+        score_by_purl = {s.get("purl"): s for s in scored_components if s.get("purl")}
+        score_by_name = {
+            s.get("component_name") or s.get("name"): s
+            for s in scored_components
+            if s.get("component_name") or s.get("name")
+        }
+
+        cves_by_ref = {}
+        for vuln in sbom.get("vulnerabilities", []):
+            cve = vuln.get("id")
+            if not cve:
+                continue
+            for affected in vuln.get("affects", []):
+                ref = affected.get("ref")
+                if ref:
+                    cves_by_ref.setdefault(ref, []).append(cve)
+
         components = []
         for comp in sbom.get("components", []):
             props = {p["name"]: p["value"] for p in comp.get("properties", [])}
+            purl = comp.get("purl")
+            bom_ref = comp.get("bom-ref")
+            name = comp.get("name")
+            score = score_by_purl.get(purl) or score_by_name.get(name)
+
+            if score is None:
+                for ref in (purl, bom_ref):
+                    for cve in cves_by_ref.get(ref, []):
+                        score = score_by_cve.get(cve)
+                        if score is not None:
+                            break
+                    if score is not None:
+                        break
+
             entry = {
-                "name": comp.get("name"),
+                "name": name,
                 "version": comp.get("version"),
-                "purl": comp.get("purl"),
+                "purl": purl,
+                "bom_ref": bom_ref,
                 "safety_relevance_class": props.get("srap:safety_relevance_class", "UNASSERTED"),
                 "domain": props.get("srap:domain"),
-                "srs_score": None,
+                "cve": score.get("cve") if score else None,
+                "srs_score": self._policy_score(score),
                 "vex_justification": comp.get("vex_justification"),
             }
             components.append(entry)
         return {"components": components}
+
+    @staticmethod
+    def _policy_score(score: Optional[dict]) -> Optional[float]:
+        """Return the 0-10 score expected by the bundled Rego policy."""
+        if not score:
+            return None
+        if score.get("srs_score_display") is not None:
+            return score["srs_score_display"]
+        normalized = score.get("srs_score")
+        if normalized is None:
+            return None
+        return normalized * 10 if normalized <= 1.0 else normalized
 
     def evaluate(self, opa_input: dict) -> dict:
         """Run OPA policy evaluation. Returns deny messages."""
