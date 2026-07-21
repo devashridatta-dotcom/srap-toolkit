@@ -319,6 +319,3 @@ Active discussion channels:
 Apache 2.0 - see [LICENSE](LICENSE)
 
 ---
-
-*Presented at Black Hat Europe 2026 Arsenal · London, December 7–10, 2026*  
-*Research affiliate: ISACA Silicon Valley · IEEE Computer Society · Cloud Security Alliance*
