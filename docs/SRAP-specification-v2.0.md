@@ -45,10 +45,11 @@ For other safety standards, equivalent mappings apply:
 ### 3.1 Formula
 
 ```
-SRS = 0.30 × CVSS_Base + 0.25 × EPSS + 0.20 × KEV_Flag + 0.15 × Domain_Weight + 0.10 × Supply_Chain_Depth
+raw = 0.30 * CVSS_norm + 0.25 * EPSS + 0.20 * KEV_Flag + 0.15 * Domain_Weight + 0.10 * SC
+SRS = min(1.0, raw * SR_multiplier)
 ```
 
-All factors are normalized to [0, 1] before weighting. Final SRS is on a [0, 10] scale, modified by SR class multiplier (SR-0 → 0.0, SR-3 → 1.0).
+All factors are normalized to [0, 1] before weighting. Final `SRS` is stored on a [0, 1] scale and displayed by the CLI on a [0, 10] scale. The SR class multiplier is SR-0 = 0.0, SR-1 = 0.5, SR-2 = 0.75, and SR-3 = 1.0.
 
 ### 3.2 Weight Derivation
 
@@ -60,15 +61,15 @@ Domain weights reflect the consequence severity of software failure across nine 
 
 | Domain | Weight | Basis |
 |---|---|---|
-| Nuclear | 0.22 | IEC 61513; catastrophic consequence potential |
-| Aviation | 0.20 | DO-178C; ALARP requirement strictness |
-| Medical | 0.18 | IEC 62304; direct patient harm pathway |
-| Automotive | 0.16 | ISO 26262; high deployment volume |
-| Rail | 0.10 | EN 50128 |
-| Industrial | 0.07 | IEC 61511 |
-| Energy | 0.04 | IEC 62351 |
-| Robotics | 0.02 | ISO 10218 |
-| Maritime | 0.01 | IEC 61162 |
+| Aviation | 1.00 | DO-178C; ALARP requirement strictness |
+| Nuclear | 0.95 | IEC 61513; catastrophic consequence potential |
+| Medical | 0.90 | IEC 62304; direct patient harm pathway |
+| Automotive | 0.85 | ISO 26262; high deployment volume |
+| Industrial | 0.85 | IEC 62443 / IEC 61511 |
+| Energy | 0.80 | IEC 62351 |
+| Rail | 0.65 | EN 50128 |
+| Robotics | 0.55 | ISO 10218 |
+| Maritime | 0.40 | IEC 61162 |
 
 ## 4. Empirical Validation
 

@@ -38,14 +38,24 @@ from typing import Optional
 # These are the weights used in the 250-CVE validation corpus.
 DOMAIN_WEIGHTS = {
     "aviation":      1.00,   # DO-178C, DO-326A
+    "nuclear":       0.95,   # IEC 61513
     "medical":       0.90,   # IEC 62304, IEC 62443-4-2
-    "ics_scada":     0.85,   # IEC 62443, IEC 61511
     "automotive":    0.85,   # ISO 26262, ISO/SAE 21434
+    "industrial":    0.85,   # IEC 62443, IEC 61511
     "energy":        0.80,   # IEC 61850, NERC CIP
+    "rail":          0.65,   # EN 50128 / EN 50657
+    "robotics":      0.55,   # ISO 10218
+    "maritime":      0.40,   # IEC 61162
     "supply_chain":  0.70,   # EO 14028, NIST 800-161r1
     "cloud_infra":   0.55,   # CIS Benchmarks
     "network_infra": 0.50,   # NIST CSF
     "general":       0.30,   # General software
+}
+
+DOMAIN_ALIASES = {
+    "ics_scada": "industrial",
+    "cloud": "cloud_infra",
+    "network": "network_infra",
 }
 
 # ── Supply-chain ecosystem exposure per domain ────────────────────────────
@@ -53,10 +63,14 @@ DOMAIN_WEIGHTS = {
 #       (npm, PyPI, Maven); 0.0 if primarily proprietary or embedded firmware.
 DOMAIN_SC = {
     "aviation":      0.0,   # embedded / proprietary
+    "nuclear":       0.0,   # embedded / proprietary
     "medical":       0.5,   # OSS libs common in FDA context
-    "ics_scada":     0.5,   # IEC 62443 assets often use OSS libs
+    "industrial":    0.5,   # IEC 62443 assets often use OSS libs
     "automotive":    0.5,   # AUTOSAR stacks increasingly OSS-based
     "energy":        0.5,   # OpenADR / IEC 61850 OSS implementations
+    "rail":          0.0,   # signaling/control systems are commonly embedded
+    "robotics":      0.5,   # mixed embedded and OSS middleware ecosystems
+    "maritime":      0.0,   # embedded / proprietary
     "supply_chain":  0.5,   # directly in ecosystem by definition
     "cloud_infra":   0.5,   # containers and cloud-native
     "network_infra": 0.0,   # firmware / proprietary
@@ -204,6 +218,8 @@ class SRSScorer:
             SRSResult with score, classification, triage recommendation,
             raw pre-gate score, SR multiplier, and per-signal contributions.
         """
+        domain = DOMAIN_ALIASES.get(domain, domain)
+
         if domain not in DOMAIN_WEIGHTS:
             raise ValueError(
                 f"Unknown domain '{domain}'. Valid: {sorted(DOMAIN_WEIGHTS.keys())}"

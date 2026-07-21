@@ -7,7 +7,7 @@ scorer = SRSScorer()
 def test_sr3_kev_blocks():
     result = scorer.score("CVE-TEST-001", cvss=9.0, epss=0.82, kev=True,
                           domain="automotive", sr_class="SR-3")
-    assert result.srs_score > 7.0
+    assert result.srs_score_display > 7.0
     assert result.triage_recommendation == "BLOCK_RELEASE"
 
 def test_sr0_defers_regardless_of_cvss():

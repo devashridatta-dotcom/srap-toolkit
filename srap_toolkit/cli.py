@@ -11,6 +11,13 @@ from .cra_annotator import CRAAnnotator
 
 
 def cmd_score(args):
+    sc_override = args.sc_override
+    if args.depth is not None:
+        print(
+            "Warning: --depth is deprecated and ignored; use --sc-override for supply-chain exposure.",
+            file=sys.stderr,
+        )
+
     scorer = SRSScorer()
     result = scorer.score(
         cve=args.cve,
@@ -19,7 +26,7 @@ def cmd_score(args):
         kev=args.kev,
         domain=args.domain,
         sr_class=args.sr_class,
-        supply_chain_depth=args.depth,
+        sc_override=sc_override,
     )
     print(json.dumps(result.to_dict(), indent=2))
 
@@ -66,7 +73,13 @@ def main():
     p_score.add_argument("--kev", action="store_true")
     p_score.add_argument("--domain", required=True)
     p_score.add_argument("--sr-class", dest="sr_class", default="SR-1")
-    p_score.add_argument("--depth", type=int, default=1)
+    p_score.add_argument(
+        "--sc-override",
+        type=float,
+        choices=[0.0, 0.5],
+        help="Override supply-chain exposure score; defaults to the domain mapping.",
+    )
+    p_score.add_argument("--depth", type=int, default=None, help=argparse.SUPPRESS)
     p_score.set_defaults(func=cmd_score)
 
     # annotate
